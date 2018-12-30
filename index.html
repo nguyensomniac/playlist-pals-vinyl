@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    span {
+      display: inline-flex;
+      align-items: center;
+      /* transform: scale(0.5); */
+    }
+    @keyframes rotate {
+      from {transform: rotate(0deg);}
+      to {transform: rotate(359deg);}
+    }
+    .spin {
+      display: inline-block;
+      width: 224px;
+      height: 224px;
+      border-radius: 100%;
+      background:
+        radial-gradient(circle 8px, #E2E2E2 99%, transparent 0),
+        url('./shine.svg') top no-repeat,
+        radial-gradient(circle 49px, #302727 99%, transparent 0),
+        conic-gradient(var(--palette-1), var(--palette-2), var(--palette-3), var(--palette-4), var(--palette-1)),
+        linear-gradient(#EAF0F0, #EAF0F0);
+      background-blend-mode: normal, color-dodge, normal, hard-light;
+      box-shadow: 0 4px 11px 0 rgba(35, 48, 48, 0.16);
+      animation: rotate 20s linear infinite;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script src="https://cdn.rawgit.com/LeaVerou/conic-gradient/609dc5f4/conic-gradient.js"></script>
+  <script>
+    const main = async () => {
+      const req = await fetch('./colors.json');
+      const json = await req.json();
+      Object.keys(json).forEach((k) => {
+        const palette = json[k];
+        const {vibrantColors} = palette;
+        const vibrantColorsSafe = vibrantColors.map((c) => `rgba(${c._rgb[0]}, ${c._rgb[1]}, ${c._rgb[2]}, 0.8)`);
+        const markup = `
+          <img style="position: relative; left: 130px; display: inline-block; z-index: 1;" height="260" width="260" src="./people/${k}.jpg" />
+          <div class="spin" style="
+            --palette-1: ${vibrantColorsSafe[0]};
+            --palette-2: ${vibrantColorsSafe[1]};
+            --palette-3: ${vibrantColorsSafe[2]};
+            --palette-4: ${vibrantColorsSafe[3]};"></div>
+        `
+        const elem = document.createElement('span');
+        elem.innerHTML = markup;
+        elem.classList.add(k);
+        document.body.appendChild(elem);
+      })
+    }
+    main();
+  </script>
+</body>
+</html>
