@@ -32,6 +32,7 @@ To use your own artwork, put it into the `/original` folder.
 
 ## Things to know
 
+- ⚠️ **_don't use this in production!_** ⚠️ For the reasons stated below, also because `.innerHTML` is trash. 
 - This demo only works in new versions of Chrome (those that support the `conic-gradient` syntax). Sorry to disappoint.
 - This demo doesn't actually use the raw generated colors. It uses #EAF0F0 as the base, blending the gradient with a hard light blending mode, 80% opacity
 - I'm not taking feature requests for now, sorry
